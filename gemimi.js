@@ -8,6 +8,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
 
+// === Endpoint Gemini ===
 app.post('/api/gemini', async (req, res) => {
   const { texte, langue } = req.body;
 
@@ -30,7 +31,6 @@ exemple de réponse attendue : une petite espace entre chaque reformulation.
 1. ....
 2. ....
 3. ....
-
 `;
 
   try {
@@ -44,12 +44,8 @@ exemple de réponse attendue : une petite espace entre chaque reformulation.
         ]
       },
       {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        params: {
-          key: process.env.GEMINI_KEY
-        }
+        headers: { 'Content-Type': 'application/json' },
+        params: { key: process.env.GEMINI_KEY }
       }
     );
 
@@ -64,12 +60,58 @@ exemple de réponse attendue : une petite espace entre chaque reformulation.
   }
 });
 
+// === Endpoint Analyse ===
+app.post('/api/analyse', async (req, res) => {
+  const { texte, langue } = req.body;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Serveur Gemini Flash actif sur http://localhost:${PORT}`);
+  if (!texte) {
+    return res.status(400).json({ error: "Le champ 'texte' est requis." });
+  }
+
+  const promptAnalyse = `
+Analyse le texte suivant: "${texte}"
+
+Tâche :
+- Fournis une analyse détaillée du texte en mettant en avant les points clés, le ton, le style et l'intention de l'auteur.
+- Étude grammaticale, orthographique et de conjugaison.
+
+⚠️ Règles :
+- Toute ta réponse doit être rédigée uniquement en ${langue}.
+
+`;
+
+  try {
+    const response = await axios.post(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+      {
+        contents: [
+          {
+            parts: [{ text: promptAnalyse }]
+          }
+        ]
+      },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        params: { key: process.env.GEMINI_KEY }
+      }
+    );
+
+    const output = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    return res.json({ texte, output });
+  } catch (error) {
+    console.error("Erreur Analyse:", error.response?.data || error.message);
+    return res.status(500).json({
+      error: "Échec de l'analyse",
+      details: error.response?.data?.error?.message || error.message
+    });
+  }
 });
 
-// Pour tester rapidement le serveur
+// === Test rapide ===
 app.get('/', (req, res) => {
   res.send('✅ Serveur Gemini Flash est en cours d\'exécution !');
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur actif sur http://localhost:${PORT}`);
 });

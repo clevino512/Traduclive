@@ -25,8 +25,8 @@ Tâche :
 - Fournis exactement 3 reformulations du texte saisi, chacune dans un style différent : soutenu, courant, familier.
 
 ⚠️ Règles :
-- Toute ta réponse doit être rédigée uniquement en ${langue} quelque soit la langue du texte saisi.
-exemple de réponse attendue : une petite espace entre chaque reformulation.
+- Ecrire les réponses en ${langue} uniquement quelque soit la langue du texte saisi.
+exemple de réponse attendue : une plus petite espace entre chaque reformulation.
 
 1. ....
 2. ....
@@ -69,14 +69,30 @@ app.post('/api/analyse', async (req, res) => {
   }
 
   const promptAnalyse = `
-Analyse le texte suivant: "${texte}"
+Réponds uniquement avec le contenu demandé, sans salutation, sans introduction, Analyse le texte suivant : "${texte}"
 
-Tâche :
-- Fournis une analyse détaillée du texte en mettant en avant les points clés, le ton, le style et l'intention de l'auteur.
-- Étude grammaticale, orthographique et de conjugaison.
+Tâches :
+1. Analyse des points clés, du ton, du style et de l’intention de l’auteur.  
+exemple :
+                Analyse du texte(mettez ceci au centre comme une titre) : 
+C'est une style informel, joyeux, enthousiaste, positif, motivant. dont l'intention est de motiver et encourager les lecteurs à poursuivre leurs rêves et à croire en eux-mêmes.
+
+2. Analyse orthographique : détection et explication des éventuelles fautes.
+exemple :
+                Analyse orthographique : 
+Il y a une faute d'orthographe dans le mot "reussir" qui devrait être écrit "réussir" avec un accent aigu sur le "e".
+
+3. Analyse grammaticale : identification des noms, verbes, adjectifs, accords.
+exemple :
+                Analyse grammaticale (etude spécificique de mots clés présents dans le texte) :
+salut (nom commun)
+très (adverbe)
+heureux (adjectif)
 
 ⚠️ Règles :
-- Toute ta réponse doit être rédigée uniquement en ${langue}.
+- La réponse doit être rédigée uniquement en ${langue}.  
+- Aucune mise en forme avec des caractères spéciaux (ex. *, #, -).  
+- La sortie doit toujours suivre la structure donnée ci-dessus, même si le texte ne contient pas d’erreurs.
 
 `;
 

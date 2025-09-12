@@ -85,9 +85,10 @@ Il y a une faute d'orthographe dans le mot "reussir" qui devrait être écrit "r
 3. Analyse grammaticale : identification des noms, verbes, adjectifs, accords.
 exemple :
                 Analyse grammaticale (etude spécificique de mots clés présents dans le texte) :
-salut (nom commun)
-très (adverbe)
-heureux (adjectif)
+- Noms : 5 (exemples : "rêves", "confiance")
+- Verbes : 4 (exemples : "poursuivre", "croire")
+- Adjectifs : 3 (exemples : "incroyables", "grandes")
+- Accords : Tous les accords sont corrects.
 
 ⚠️ Règles :
 - La réponse doit être rédigée uniquement en ${langue}.  

@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 3001;
 // === Endpoint Gemini ===
 app.post('/api/gemini', async (req, res) => {
   const { texte, langue } = req.body;
+  
+  const langueMajuscule = langue.toUpperCase();
 
   if (!texte) {
     return res.status(400).json({ error: "Le champ 'texte' est requis." });
